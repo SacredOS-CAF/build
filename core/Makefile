@@ -1838,6 +1838,8 @@ RECOVERYIMAGE_ID_FILE := $(PRODUCT_OUT)/recovery.id
 
 # $(1): output file
 define build-recoveryimage-target
+  $(hide) ./vendor/sacred/tools/changelog
+  $(hide) mv $(PRODUCT_OUT)/Changelog.txt $(PRODUCT_OUT)/SacredOS-$(SACRED_VERSION)-$(shell date -u +%Y%m%d-%H%M)-Changelog.txt
   # Making recovery image
   $(hide) mkdir -p $(TARGET_RECOVERY_OUT)
   $(hide) mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/sdcard $(TARGET_RECOVERY_ROOT_OUT)/tmp
