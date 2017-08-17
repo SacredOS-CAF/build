@@ -4298,8 +4298,15 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) \
 	@echo "Package OTA: $@"
 	$(call build-ota-package-target,$@,-k $(KEY_CERT_PAIR) --output_metadata_path $(INTERNAL_OTA_METADATA))
 
-.PHONY: otapackage
+SACRED_TARGET_PACKAGE := $(PRODUCT_OUT)/SacredOS-$(SACRED_VERSION)-$(TARGET_DEVICE)-$(shell date -u +%Y%m%d-%H%M)-$(SACRED_BUILD_TYPE).zip
+
+.PHONY: otapackage sacred
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
+sacred: otapackage
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(SACRED_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(SACRED_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(SACRED_TARGET_PACKAGE).md5sum
+	@echo "Package Complete: $(SACRED_TARGET_PACKAGE)" >&2
+	@echo "Size: `du -sh $(SACRED_TARGET_PACKAGE) | awk '{print $1}' `" >&2
 
 ifeq ($(BOARD_BUILD_RETROFIT_DYNAMIC_PARTITIONS_OTA_PACKAGE),true)
 name := $(TARGET_PRODUCT)
