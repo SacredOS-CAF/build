@@ -39,6 +39,7 @@ PRODUCT_PACKAGES += \
     InputDevices \
     KeyChain \
     Keyguard \
+    LatinIME \
     Launcher3QuickStep \
     ManagedProvisioning \
     MtpDocumentsProvider \
